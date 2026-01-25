@@ -193,7 +193,7 @@ if CUDNN_AVAILABLE:
             cudnn_q = g.tensor(
                 name="q",
                 dim=(graph_b, h_qo, graph_s_qo, d_qk),
-                stride=(h_qo * d_qk, d_qk, d_qk * h_qo, 1),
+                stride=(h_qo * d_qk, d_qk, q.stride()[q.dim()-3], 1),
                 data_type=cudnn_q_data_type,
             )
 
@@ -272,7 +272,7 @@ if CUDNN_AVAILABLE:
                 cudnn_k_cache = g.tensor(
                     name="k_cache",
                     dim=(graph_b, h_kv, graph_s_kv, d_qk),
-                    stride=(h_kv * d_qk * graph_s_kv, d_qk, d_qk * h_kv, 1),
+                    stride=(h_kv * d_qk * graph_s_kv, d_qk, k_cache.stride()[k_cache.dim()-3], 1),
                     data_type=cudnn_k_data_type,
                 )
 
@@ -284,7 +284,7 @@ if CUDNN_AVAILABLE:
                 cudnn_v_cache = g.tensor(
                     name="v_cache",
                     dim=(graph_b, h_kv, graph_s_kv, d_vo),
-                    stride=(h_kv * d_vo * graph_s_kv, d_vo, d_vo * h_kv, 1),
+                    stride=(h_kv * d_vo * graph_s_kv, d_vo, v_cache.stride()[v_cache.dim()-3], 1),
                     data_type=cudnn_v_data_type,
                 )
 
